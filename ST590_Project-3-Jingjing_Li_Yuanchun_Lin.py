@@ -26,6 +26,7 @@ for i in range (0,len(PC_df)//500):
     else:
         continue
     i +=1
+    PC_wrt=PC_df.loc[0:500]
     PC_wrt["timestamp"]=[time.strftime("%H:%M:%S",time.localtime())]*499
     PC_wrt.to_csv("prj3CSV2/PC_wrt" + str(i) + ".csv",index=False,header = True)
     time.sleep(20)
@@ -33,8 +34,8 @@ for i in range (0,len(PC_df)//500):
 ## Reading a Stream    
 from pyspark.sql.types import StructType
 myschema=StructType().add("time","string").add("pid","string").add("x","integer").add("y","integer").add("z","integer").add("timestamp","timestamp")
-df_SA = spark.readStream.schema(myschema).csv("prj3CSV")
-df_PC = spark.readStream.schema(myschema).csv("prj3CSV2") 
+df_SA = spark.readStream.schema(myschema).csv("prj3CSV/SA_wrt*.csv")
+df_PC = spark.readStream.schema(myschema).csv("prj3CSV2/PC_wrt*.csv") 
 
 ## Transform/Aggregation Step
 from math import sqrt
@@ -45,7 +46,7 @@ df_SA3=df_SA2.select(["time","pid","mag_SA"])
 df_PC3=df_PC2.select(["time","pid","mag_SA"])
 
 ## Writing the Streams
-query_SA=df_SA3.writeStream.format("csv").outputMode("append").option("checkpointlocation","checkpoint_SA")
+query_SA=df_SA3.writeStream.format("csv").trigger(processingTime="10 seconds").outputMode("append").option("checkpointlocation","checkpoint_SA/*.*")
 query_SA.start()
 query_PC=df_SA3.writeStream.format("csv").outputMode("append").option("checkpointlocation","checkpoint_PC")
 query_PC.start()
