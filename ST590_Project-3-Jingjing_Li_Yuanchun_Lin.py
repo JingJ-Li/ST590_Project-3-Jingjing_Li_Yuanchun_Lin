@@ -46,9 +46,17 @@ df_SA3=df_SA2.select(["time","pid","mag_SA"])
 df_PC3=df_PC2.select(["time","pid","mag_SA"])
 
 ## Writing the Streams
-query_SA=df_SA3.writeStream.format("csv").trigger(processingTime="10 seconds").outputMode("append").option("checkpointlocation","checkpoint_SA/*.*")
+query_SA=df_SA3.writeStream\
+               .format("csv")\
+               .option("checkpointlocation","checkpoint_SA")\
+               .option("path", "csv_SA")\
+               .outputMode("append")
 query_SA.start()
-query_PC=df_SA3.writeStream.format("csv").outputMode("append").option("checkpointlocation","checkpoint_PC")
+query_PC=df_PC3.writeStream\
+               .format("csv")\
+               .option("checkpointlocation","checkpoint_PC")\
+               .option("path", "csv_PC")\
+               .outputMode("append")
 query_PC.start()
 
 
