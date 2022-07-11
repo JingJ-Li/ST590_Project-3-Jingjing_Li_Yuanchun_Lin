@@ -6,7 +6,6 @@ ST590_Project3-Jingjing_Li&YuanChun_Lin
 
 ### Import modules
 import pandas as pd
-from pyspark.sql import SparkSession
 import time
 
 ### Read in data
@@ -20,12 +19,11 @@ PC_df= acc_df[acc_df.pid=="PC6771"]
 #for i in range (0, SA_df.shape[0]//500):
 for i in range (0,len(PC_df)//500):
     if i < len(SA_df)//500:
-        SA_wrt=SA_df.iloc[i*500:(i+1)500]
+        SA_wrt=SA_df.iloc[i*500:(i+1)*500]
         SA_wrt.to_csv("prj3CSV/SA_wrt" + str(i) + ".csv",index=False,header = True)
     else:
         continue
-    i +=1
-    PC_wrt=PC_df.iloc[0:500]
+    PC_wrt=PC_df.iloc[i*500:(i+1)*500]
     PC_wrt.to_csv("prj3CSV2/PC_wrt" + str(i) + ".csv",index=False,header = True)
     time.sleep(20)
     
