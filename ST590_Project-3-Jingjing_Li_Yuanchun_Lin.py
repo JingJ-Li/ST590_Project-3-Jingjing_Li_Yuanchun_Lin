@@ -68,9 +68,9 @@ all_SA \
 .coalesce(1) \
 .write.format("csv") \
 .option("header", "false") \
-.save("prj3CSV/single_csv_SA/final_SA.csv")
+.save("prj3CSV/single_csv_SA")
 all_PC \
 .coalesce(1) \
 .write.format("csv") \
 .option("header", "false") \
-.save("prj3CSV2/single_csv_PC/final_PC.csv")
+.save("prj3CSV2/single_csv_PC")
