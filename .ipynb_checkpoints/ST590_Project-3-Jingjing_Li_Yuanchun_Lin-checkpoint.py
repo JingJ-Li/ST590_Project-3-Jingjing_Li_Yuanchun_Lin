@@ -37,7 +37,7 @@ df_PC = spark.readStream.schema(myschema).csv("prj3CSV2")
 from math import sqrt
 from pyspark.sql.functions import *
 df_SA2=df_SA.withColumn("mag_SA",sqrt(col("x")**2+col("y")**2+col("z")**2))
-df_PC2=df_PC.withColumn("mag_PC",sqrt(col("x")**2+icol("y")**2+col("z")**2))
+df_PC2=df_PC.withColumn("mag_PC",sqrt(col("x")**2+col("y")**2+col("z")**2))
 df_SA3=df_SA2.select(["time","pid","mag_SA"])
 df_PC3=df_PC2.select(["time","pid","mag_PC"])
 
@@ -68,9 +68,9 @@ all_SA \
 .coalesce(1) \
 .write.format("csv") \
 .option("header", "false") \
-.save("prj3CSV/single_csv_SA/final_SA.csv")
+.save("prj3CSV/single_csv_SA")
 all_PC \
 .coalesce(1) \
 .write.format("csv") \
 .option("header", "false") \
-.save("prj3CSV2/single_csv_PC/final_PC.csv")
+.save("prj3CSV2/single_csv_PC")
