@@ -35,12 +35,13 @@ for i in range(df_2.shape[0]//500+1): # i from 0 to 4283
     if i!=df_2.shape[0]//500:
         temp=df_2.iloc[i*500:(i+1)*500,:]
         temp.to_csv('data/PC6771/PC6771_'+str(i)+'.csv',index=False)
+        time.sleep(20)
     else:
         temp=df_2.iloc[i*500:,:]
         temp.to_csv('data/PC6771/PC6771_'+str(i)+'.csv',index=False)
-    time.sleep(20)
+        time.sleep(20)
     
-#Reading a Stream    
+# Reading a Stream    
 userschema=StructType().add("time","string").add("pid","string").add("x","float").add("y","float").add("z","float")
 df_SA = spark.readStream.schema(userschema).csv("data/SA0297")
 df_PC = spark.readStream.schema(userschema).csv("data/PC6771")
